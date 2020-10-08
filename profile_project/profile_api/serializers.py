@@ -29,7 +29,10 @@ class ProfileSerializer(serializers.ModelSerializer):
     profilePic = serializers.ImageField(
         max_length=None, use_url=True
     )
+
     class Meta:
         model = Profile
-        fields = ('id', 'user_profile', 'phone', 'gender', 'profilePic', 'dateOfBirth', 'created_on')
+        fields = (
+            'id', 'user_profile', 'phone', 'gender', 'profilePic', 'dateOfBirth', 'companyAddress', 'permanentAddress',
+            'created_on')
         extra_kwargs = {'user_profile': {'read_only': True}}

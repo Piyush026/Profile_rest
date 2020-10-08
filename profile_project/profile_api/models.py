@@ -44,6 +44,25 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
+class Address(models.Model):
+    streetAddress = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    pinCode = models.CharField(max_length=50)
+    country = models.CharField(max_length=50)
+
+    class Meta:
+        abstract = True
+
+
+class CompanyAddress(Address):
+    companyAddress = models.CharField(max_length=50)
+
+
+class PermanentAddress(Address):
+    permanentAddress = models.CharField(max_length=50)
+
+
 class Profile(models.Model):
     user_profile = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     phone = models.CharField(max_length=12)
@@ -55,6 +74,8 @@ class Profile(models.Model):
     profilePic = models.FileField(blank=False)
     dateOfBirth = models.DateField(auto_now=False, blank=False)
     created_on = models.DateField(auto_now_add=True)
+    permanentAddress = models.OneToOneField(PermanentAddress, on_delete=models.CASCADE, primary_key=True, )
+    companyAddress = models.OneToOneField(CompanyAddress, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.phone
